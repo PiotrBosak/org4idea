@@ -1,5 +1,5 @@
 <templateSet group="Org">
-    <template name="&lt;s" value="#+BEGIN_SRC $LANG$&#10;  $SELECTION$$END$&#10;#+END_SRC" description="Source block"
+    <template name="&lt;s" value="#+BEGIN_SRC $LANG$ &#10;  $SELECTION$$END$&#10;#+END_SRC" description="Source block"
               toReformat="false" toShortenFQNames="true">
         <variable name="LANG" expression="" defaultValue="" alwaysStopAt="true"/>
         <context>

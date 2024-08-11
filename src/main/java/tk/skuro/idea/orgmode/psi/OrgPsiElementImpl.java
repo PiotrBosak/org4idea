@@ -46,7 +46,7 @@ public class OrgPsiElementImpl extends ASTWrapperPsiElement implements PsiLangua
 
         @Override
         public boolean decode(@NotNull TextRange textRange, @NotNull StringBuilder outChars) {
-            String text = myHost.getText().substring(textRange.getStartOffset(), textRange.getEndOffset());
+            String text = myHost.getText().substring(textRange.getStartOffset() , textRange.getEndOffset());
             outChars.append(text);
             return true; // Return true if decoding is successful
         }

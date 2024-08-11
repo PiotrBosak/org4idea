@@ -17,13 +17,12 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
     public void getLanguagesToInject(@NotNull MultiHostRegistrar registrar, @NotNull PsiElement context) {
         try {
             if (context instanceof PsiLanguageInjectionHost host) {
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                 String text = host.getText();
 
                 // Detect the beginning of a code block and extract the language
                 for (Language language : Language.getRegisteredLanguages()) {
                 }
-                if (text.startsWith("#+BEGIN_SRC") || text.startsWith("#+begin_src")) {
+                if (text.startsWith("#+BEGIN_SRC")) {
                     String language = extractLanguage(text);
                     if (!language.isEmpty()) {
 
@@ -36,18 +35,10 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
                         if (injectedLanguage != null) {
                             // Inject the language into the block between #+BEGIN_SRC and #+END_SRC
 
-                            int startOffset = 0;
-                            if (text.contains("#+BEGIN_SRC"))
-                                startOffset = text.indexOf("#+BEGIN_SRC") + "#+BEGIN_SRC".length() + language.length() + 2;
-                            else
-                                startOffset = text.indexOf("#+begin_src") + "#+begin_src".length() + language.length() + 2;
+                            int startOffset = text.indexOf("#+BEGIN_SRC") + "#+BEGIN_SRC".length() + language.length() + 2;
 
 
-                            int endOffset = 0;
-                            if (text.contains("#+END_SRC"))
-                                endOffset = text.indexOf("#+END_SRC");
-                            else
-                                endOffset = text.indexOf("#+end_src");
+                            int endOffset = text.indexOf("#+END_SRC");
                             if (endOffset > startOffset) {
                                 registrar.startInjecting(injectedLanguage)
                                         .addPlace(null, null, host, TextRange.create(startOffset, endOffset))
