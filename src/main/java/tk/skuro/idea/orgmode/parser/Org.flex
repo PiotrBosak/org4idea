@@ -31,7 +31,6 @@ COMMENT ="#".*
 
 KEYWORD={SPACES}*"#+"{INPUT_CHARACTER}+":"{INPUT_OR_SPACES}*{CRLF}?
 
-UNDERLINE = "_" [^\r\n]* "_"
 BOLD = "*" [^\r\n]+ "*"
 OUTLINE = [*]+ {INPUT_OR_SPACES}*
 
@@ -72,7 +71,6 @@ PROPERTIES_END=[\ \t]*":END:"
 {PROPERTIES_END}      { return UNMATCHED_DELIMITER; }
 
 {WHITE_SPACE_CHAR}+   { return WHITE_SPACE; }
-{UNDERLINE}           { return UNDERLINE; }
 {COMMENT}             { return COMMENT; }
 {BOLD}                { return BOLD; }
 
