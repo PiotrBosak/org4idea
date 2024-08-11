@@ -75,8 +75,10 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileTypeFactory implementation="tk.skuro.idea.orgmode.OrgFileTypeFactory" />
-        <lang.parserDefinition language="OrgMode" implementationClass="tk.skuro.idea.orgmode.parser.OrgParserDefinition"/>
+        <multiHostInjector implementation="tk.skuro.idea.orgmode.highlight.OrgCodeBlockInjector"/>
+        <fileTypeFactory implementation="tk.skuro.idea.orgmode.OrgFileTypeFactory"/>
+        <lang.parserDefinition language="OrgMode"
+                               implementationClass="tk.skuro.idea.orgmode.parser.OrgParserDefinition"/>
 
         <syntaxHighlighter key="OrgMode" implementationClass="tk.skuro.idea.orgmode.highlight.OrgSyntaxHighlighter"/>
         <colorSettingsPage implementation="tk.skuro.idea.orgmode.highlight.OrgColorSettingsPage"/>
@@ -85,7 +87,8 @@
                               implementationClass="tk.skuro.idea.orgmode.editor.OrgSpellcheckingStrategy"/>
 
         <lang.commenter language="OrgMode" implementationClass="tk.skuro.idea.orgmode.editor.OrgCommenter"/>
-        <lang.foldingBuilder language="OrgMode" implementationClass="tk.skuro.idea.orgmode.editor.folding.OrgFoldingBuilder"/>
+        <lang.foldingBuilder language="OrgMode"
+                             implementationClass="tk.skuro.idea.orgmode.editor.folding.OrgFoldingBuilder"/>
 
         <liveTemplateContext implementation="tk.skuro.idea.orgmode.editor.OrgContextType"/>
         <defaultLiveTemplatesProvider implementation="tk.skuro.idea.orgmode.editor.OrgLiveTemplatesProvider"/>

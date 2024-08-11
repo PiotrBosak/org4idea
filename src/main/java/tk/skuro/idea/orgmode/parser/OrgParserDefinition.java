@@ -57,7 +57,7 @@ public class OrgParserDefinition implements ParserDefinition {
      */
     @Override
     public IFileElementType getFileNodeType() {
-        return new IStubFileElementType(OrgLanguage.INSTANCE);
+        return new IStubFileElementType("org", OrgLanguage.INSTANCE);
     }
 
     /**
