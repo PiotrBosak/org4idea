@@ -20,7 +20,6 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
                 String text = host.getText();
                 if (text.startsWith("#+BEGIN_SRC")) {
                     String language = extractLanguage(text);
-                    System.out.println(language);
                     if (!language.isEmpty()) {
 
                         Language injectedLanguage = null;
@@ -34,7 +33,6 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
 
                             int startOffset = text.indexOf("#+BEGIN_SRC") + "#+BEGIN_SRC".length() + language.length();
                             startOffset = text.indexOf("\n", startOffset) + 1; // Move to the next line
-                            System.out.println("YY");
                             while (startOffset < text.length() && Character.isWhitespace(text.charAt(startOffset))) {
                                 startOffset++;
                             }
@@ -51,15 +49,12 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
                 }
             }
         } catch (Exception ignored) {
-            System.out.println("Error, " + ignored.getMessage());
 
         }
     }
 
     private String extractLanguage(String text) {
         var beginOfLang = text.substring(12);
-        System.out.println("QQQ");
-        System.out.println(beginOfLang);
         if (beginOfLang.startsWith("scala")) {
             return "scala";
         }
