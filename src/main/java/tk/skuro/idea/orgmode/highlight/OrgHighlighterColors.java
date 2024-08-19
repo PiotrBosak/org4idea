@@ -15,7 +15,7 @@ public interface OrgHighlighterColors {
     /**
      * Default style for outline
      */
-    TextAttributesKey OUTLINE_ATTR_KEY = createTextAttributesKey("ORG.OUTLINE", KEYWORD);
+    TextAttributesKey OUTLINE_ATTR_KEY = createTextAttributesKey("ORG.OUTLINE", METADATA);
 
     /**
      * Default style of comments
