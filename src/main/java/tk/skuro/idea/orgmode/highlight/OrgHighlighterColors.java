@@ -11,11 +11,19 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
  * @since 0.1
  */
 public interface OrgHighlighterColors {
-
     /**
      * Default style for outline
      */
-    TextAttributesKey OUTLINE_ATTR_KEY = createTextAttributesKey("ORG.OUTLINE", METADATA);
+    TextAttributesKey OUTLINE_ATTR_KEY1 = createTextAttributesKey("ORG.OUTLINE1", IDENTIFIER);
+    TextAttributesKey OUTLINE_ATTR_KEY2 = createTextAttributesKey("ORG.OUTLINE2", IDENTIFIER);
+    TextAttributesKey OUTLINE_ATTR_KEY3 = createTextAttributesKey("ORG.OUTLINE3", IDENTIFIER);
+    TextAttributesKey OUTLINE_ATTR_KEY4 = createTextAttributesKey("ORG.OUTLINE4", IDENTIFIER);
+    TextAttributesKey OUTLINE_ATTR_KEY5 = createTextAttributesKey("ORG.OUTLINE5", IDENTIFIER);
+    TextAttributesKey OUTLINE_ATTR_KEY6 = createTextAttributesKey("ORG.OUTLINE6", IDENTIFIER);
+    TextAttributesKey OUTLINE_ATTR_KEY7 = createTextAttributesKey("ORG.OUTLINE7", IDENTIFIER);
+    TextAttributesKey OUTLINE_ATTR_KEY8 = createTextAttributesKey("ORG.OUTLINE8", IDENTIFIER);
+    TextAttributesKey OUTLINE_ATTR_KEY9 = createTextAttributesKey("ORG.OUTLINE9", IDENTIFIER);
+    TextAttributesKey OUTLINE_ATTR_KEY10 = createTextAttributesKey("ORG.OUTLINE10", IDENTIFIER);
 
     /**
      * Default style of comments

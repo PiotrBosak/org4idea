@@ -24,8 +24,14 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
 
                         Language injectedLanguage = null;
                         for (Language languageL : Language.getRegisteredLanguages()) {
-                            if (languageL.getDisplayName().toLowerCase().contains(language.toLowerCase()))
+                            if (language.equals("scala")) {
+                                System.out.println("AAAA");
+                                injectedLanguage = Language.findLanguageByID("Scala 3");
+                                System.out.println(injectedLanguage);
+                            } else if (languageL.getDisplayName().toLowerCase().contains(language.toLowerCase())) {
+                                System.out.println("YYYY found " + languageL);
                                 injectedLanguage = languageL;
+                            }
                         }
 //                        Language.findLanguageByID(language.toUpperCase());
                         if (injectedLanguage != null) {
@@ -55,6 +61,8 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
 
     private String extractLanguage(String text) {
         var beginOfLang = text.substring(12);
+        System.out.println("XXXXXXXXXXXXXXX");
+        System.out.println(beginOfLang);
         if (beginOfLang.startsWith("scala")) {
             return "scala";
         }

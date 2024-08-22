@@ -26,9 +26,17 @@ public class OrgSyntaxHighlighter extends SyntaxHighlighterBase {
 
     static {
         fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.COMMENT), OrgHighlighterColors.COMMENTS_ATTR_KEY);
-        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.OUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY);
+        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.FIRSTOUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY1);
+        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.SECONDOUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY2);
+        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.THIRDOUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY3);
+        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.FOURTHOUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY4);
+        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.FIFTHOUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY5);
+        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.SIXTHOUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY6);
+        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.SEVENTHOUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY7);
+        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.EIGTHOUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY8);
+        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.NINTHOUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY9);
+        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.TENTHOUTLINE), OrgHighlighterColors.OUTLINE_ATTR_KEY10);
         fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.BOLD), OrgHighlighterColors.BOLD_ATTR_KEY);
-        fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.UNDERLINE), OrgHighlighterColors.UNDERLINE_ATTR_KEY);
         fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.KEYWORD), OrgHighlighterColors.KEYWORD_ATTR_KEY);
         fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.CODE), OrgHighlighterColors.CODE_ATTR_KEY);
         fillMap(ATTRIBUTES, TokenSet.create(OrgTokenTypes.BLOCK_CONTENT), OrgHighlighterColors.BLOCK_CONTENT_ATTR_KEY);

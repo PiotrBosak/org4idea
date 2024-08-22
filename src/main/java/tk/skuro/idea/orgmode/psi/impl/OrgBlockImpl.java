@@ -13,14 +13,15 @@ import tk.skuro.idea.orgmode.psi.*;
 
 public class OrgBlockImpl extends OrgPsiElementImpl implements OrgBlock {
 
-  public OrgBlockImpl(ASTNode node) {
-    super(node);
+  public OrgBlockImpl(@NotNull ASTNode astNode) {
+    super(astNode);
   }
 
   public void accept(@NotNull OrgVisitor visitor) {
     visitor.visitBlock(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OrgVisitor) accept((OrgVisitor)visitor);
     else super.accept(visitor);

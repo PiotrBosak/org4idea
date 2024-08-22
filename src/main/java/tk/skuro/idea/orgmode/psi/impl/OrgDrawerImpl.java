@@ -13,14 +13,15 @@ import tk.skuro.idea.orgmode.psi.*;
 
 public class OrgDrawerImpl extends OrgPsiElementImpl implements OrgDrawer {
 
-  public OrgDrawerImpl(ASTNode node) {
-    super(node);
+  public OrgDrawerImpl(@NotNull ASTNode astNode) {
+    super(astNode);
   }
 
   public void accept(@NotNull OrgVisitor visitor) {
     visitor.visitDrawer(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OrgVisitor) accept((OrgVisitor)visitor);
     else super.accept(visitor);

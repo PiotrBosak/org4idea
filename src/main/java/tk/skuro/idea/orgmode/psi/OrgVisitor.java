@@ -15,7 +15,27 @@ public class OrgVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitOutlineBlock(@NotNull OrgOutlineBlock o) {
+  public void visitOutlineBlock1(@NotNull OrgOutlineBlock1 o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOutlineBlock2(@NotNull OrgOutlineBlock2 o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOutlineBlock3(@NotNull OrgOutlineBlock3 o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOutlineBlock4(@NotNull OrgOutlineBlock4 o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOutlineBlock5(@NotNull OrgOutlineBlock5 o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOutlineBlock6(@NotNull OrgOutlineBlock6 o) {
     visitPsiElement(o);
   }
 

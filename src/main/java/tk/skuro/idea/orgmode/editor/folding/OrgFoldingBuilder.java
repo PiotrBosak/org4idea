@@ -109,7 +109,7 @@ public class OrgFoldingBuilder implements FoldingBuilder {
     }
 
     private boolean isOutlineBlock(IElementType token) {
-        return OrgTokenTypes.OUTLINE_BLOCK.equals(token);
+        return OrgTokenTypes.OUTLINE_BLOCK_1.equals(token);
     }
 
     /**
@@ -132,7 +132,7 @@ public class OrgFoldingBuilder implements FoldingBuilder {
     }
 
     private boolean isOutline(IElementType token) {
-        return OrgTokenTypes.OUTLINE.equals(token);
+        return OrgTokenTypes.FIRSTOUTLINE.equals(token);
     }
 
     private boolean isBlock(IElementType token) {

@@ -159,7 +159,7 @@ public class NewOutlineSameLevel extends AnAction {
     private PsiElement findPreviousOutline(PsiElement element) {
         PsiElement candidate = findRootLevel(element);
         while (candidate != null &&
-                !candidate.getNode().getElementType().equals(OrgTokenTypes.OUTLINE_BLOCK)) {
+                !candidate.getNode().getElementType().equals(OrgTokenTypes.OUTLINE_BLOCK_1)) {
             candidate = candidate.getPrevSibling();
         }
         return candidate;
@@ -180,6 +180,6 @@ public class NewOutlineSameLevel extends AnAction {
     }
 
     private boolean isOutlineBlock(PsiElement candidate) {
-        return candidate != null && candidate.getNode().getElementType() == OrgTokenTypes.OUTLINE_BLOCK;
+        return candidate != null && candidate.getNode().getElementType() == OrgTokenTypes.OUTLINE_BLOCK_1;
     }
 }

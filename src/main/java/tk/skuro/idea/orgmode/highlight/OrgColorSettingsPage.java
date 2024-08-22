@@ -44,7 +44,16 @@ public class OrgColorSettingsPage implements ColorSettingsPage {
         // Populate attribute descriptors.
         addAttribute("org.editor.colorsettingspage.keyword", KEYWORD_ATTR_KEY);
         addAttribute("org.editor.colorsettingspage.comment", COMMENTS_ATTR_KEY);
-        addAttribute("org.editor.colorsettingspage.outline", OUTLINE_ATTR_KEY);
+        addAttribute("org.editor.colorsettingspage.outline1", OUTLINE_ATTR_KEY1);
+        addAttribute("org.editor.colorsettingspage.outline2", OUTLINE_ATTR_KEY2);
+        addAttribute("org.editor.colorsettingspage.outline3", OUTLINE_ATTR_KEY3);
+        addAttribute("org.editor.colorsettingspage.outline4", OUTLINE_ATTR_KEY4);
+        addAttribute("org.editor.colorsettingspage.outline5", OUTLINE_ATTR_KEY5);
+        addAttribute("org.editor.colorsettingspage.outline6", OUTLINE_ATTR_KEY6);
+        addAttribute("org.editor.colorsettingspage.outline7", OUTLINE_ATTR_KEY7);
+        addAttribute("org.editor.colorsettingspage.outline8", OUTLINE_ATTR_KEY8);
+        addAttribute("org.editor.colorsettingspage.outline9", OUTLINE_ATTR_KEY9);
+        addAttribute("org.editor.colorsettingspage.outline10", OUTLINE_ATTR_KEY10);
         addAttribute("org.editor.colorsettingspage.underline", UNDERLINE_ATTR_KEY);
         addAttribute("org.editor.colorsettingspage.bold", BOLD_ATTR_KEY);
         addAttribute("org.editor.colorsettingspage.code", CODE_ATTR_KEY);

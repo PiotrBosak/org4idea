@@ -13,14 +13,15 @@ import tk.skuro.idea.orgmode.psi.*;
 
 public class OrgTextElementImpl extends OrgPsiElementImpl implements OrgTextElement {
 
-  public OrgTextElementImpl(ASTNode node) {
-    super(node);
+  public OrgTextElementImpl(@NotNull ASTNode astNode) {
+    super(astNode);
   }
 
   public void accept(@NotNull OrgVisitor visitor) {
     visitor.visitTextElement(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OrgVisitor) accept((OrgVisitor)visitor);
     else super.accept(visitor);

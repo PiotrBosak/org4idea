@@ -23,25 +23,15 @@ public class OrgParser implements PsiParser, LightPsiParser {
     boolean r;
     b = adapt_builder_(t, b, this, null);
     Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-    if (t == BLOCK) {
-      r = block(b, 0);
-    }
-    else if (t == DRAWER) {
-      r = drawer(b, 0);
-    }
-    else if (t == OUTLINE_BLOCK) {
-      r = outlineBlock(b, 0);
-    }
-    else if (t == TEXT_ELEMENT) {
-      r = text_element(b, 0);
-    }
-    else {
-      r = parse_root_(t, b, 0);
-    }
+    r = parse_root_(t, b);
     exit_section_(b, 0, m, t, r, true, TRUE_CONDITION);
   }
 
-  protected boolean parse_root_(IElementType t, PsiBuilder b, int l) {
+  protected boolean parse_root_(IElementType t, PsiBuilder b) {
+    return parse_root_(t, b, 0);
+  }
+
+  static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
     return orgFile(b, l + 1);
   }
 
@@ -62,11 +52,10 @@ public class OrgParser implements PsiParser, LightPsiParser {
   // BLOCK_CONTENT*
   private static boolean block_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "block_1")) return false;
-    int c = current_position_(b);
     while (true) {
+      int c = current_position_(b);
       if (!consumeToken(b, BLOCK_CONTENT)) break;
       if (!empty_element_parsed_guard_(b, "block_1", c)) break;
-      c = current_position_(b);
     }
     return true;
   }
@@ -88,32 +77,34 @@ public class OrgParser implements PsiParser, LightPsiParser {
   // DRAWER_CONTENT*
   private static boolean drawer_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "drawer_1")) return false;
-    int c = current_position_(b);
     while (true) {
+      int c = current_position_(b);
       if (!consumeToken(b, DRAWER_CONTENT)) break;
       if (!empty_element_parsed_guard_(b, "drawer_1", c)) break;
-      c = current_position_(b);
     }
     return true;
   }
 
   /* ********************************************************** */
-  // COMMENT|KEYWORD|CODE|PROPERTIES|WHITE_SPACE|UNMATCHED_DELIMITER|outlineBlock|block|drawer|text_element
+  // COMMENT|KEYWORD|CODE|PROPERTIES|WHITE_SPACE|UNMATCHED_DELIMITER|outlineBlock1|outlineBlock2|outlineBlock3|outlineBlock4|outlineBlock5|outlineBlock6|block|drawer|text_element
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
-    Marker m = enter_section_(b);
     r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, KEYWORD);
     if (!r) r = consumeToken(b, CODE);
     if (!r) r = consumeToken(b, PROPERTIES);
     if (!r) r = consumeToken(b, WHITE_SPACE);
     if (!r) r = consumeToken(b, UNMATCHED_DELIMITER);
-    if (!r) r = outlineBlock(b, l + 1);
+    if (!r) r = outlineBlock1(b, l + 1);
+    if (!r) r = outlineBlock2(b, l + 1);
+    if (!r) r = outlineBlock3(b, l + 1);
+    if (!r) r = outlineBlock4(b, l + 1);
+    if (!r) r = outlineBlock5(b, l + 1);
+    if (!r) r = outlineBlock6(b, l + 1);
     if (!r) r = block(b, l + 1);
     if (!r) r = drawer(b, l + 1);
     if (!r) r = text_element(b, l + 1);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -121,35 +112,93 @@ public class OrgParser implements PsiParser, LightPsiParser {
   // item_*
   static boolean orgFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "orgFile")) return false;
-    int c = current_position_(b);
     while (true) {
+      int c = current_position_(b);
       if (!item_(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "orgFile", c)) break;
-      c = current_position_(b);
     }
     return true;
   }
 
   /* ********************************************************** */
-  // OUTLINE
-  public static boolean outlineBlock(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "outlineBlock")) return false;
-    if (!nextTokenIs(b, OUTLINE)) return false;
+  // FIRSTOUTLINE
+  public static boolean outlineBlock1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "outlineBlock1")) return false;
+    if (!nextTokenIs(b, FIRSTOUTLINE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, OUTLINE);
-    exit_section_(b, m, OUTLINE_BLOCK, r);
+    r = consumeToken(b, FIRSTOUTLINE);
+    exit_section_(b, m, OUTLINE_BLOCK_1, r);
     return r;
   }
 
   /* ********************************************************** */
-  // TEXT | UNDERLINE | BOLD | CRLF
+  // SECONDOUTLINE
+  public static boolean outlineBlock2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "outlineBlock2")) return false;
+    if (!nextTokenIs(b, SECONDOUTLINE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SECONDOUTLINE);
+    exit_section_(b, m, OUTLINE_BLOCK_2, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // THIRDOUTLINE
+  public static boolean outlineBlock3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "outlineBlock3")) return false;
+    if (!nextTokenIs(b, THIRDOUTLINE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, THIRDOUTLINE);
+    exit_section_(b, m, OUTLINE_BLOCK_3, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // FOURTHOUTLINE
+  public static boolean outlineBlock4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "outlineBlock4")) return false;
+    if (!nextTokenIs(b, FOURTHOUTLINE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, FOURTHOUTLINE);
+    exit_section_(b, m, OUTLINE_BLOCK_4, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // FIFTHOUTLINE
+  public static boolean outlineBlock5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "outlineBlock5")) return false;
+    if (!nextTokenIs(b, FIFTHOUTLINE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, FIFTHOUTLINE);
+    exit_section_(b, m, OUTLINE_BLOCK_5, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // SIXTHOUTLINE
+  public static boolean outlineBlock6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "outlineBlock6")) return false;
+    if (!nextTokenIs(b, SIXTHOUTLINE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SIXTHOUTLINE);
+    exit_section_(b, m, OUTLINE_BLOCK_6, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // TEXT |  BOLD | CRLF
   public static boolean text_element(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "text_element")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, TEXT_ELEMENT, "<text element>");
     r = consumeToken(b, TEXT);
-    if (!r) r = consumeToken(b, UNDERLINE);
     if (!r) r = consumeToken(b, BOLD);
     if (!r) r = consumeToken(b, CRLF);
     exit_section_(b, l, m, r, false, null);

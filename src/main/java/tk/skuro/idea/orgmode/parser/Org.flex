@@ -32,7 +32,16 @@ COMMENT ="#".*
 KEYWORD={SPACES}*"#+"{INPUT_CHARACTER}+":"{INPUT_OR_SPACES}*{CRLF}?
 
 BOLD = "*" [^\r\n]+ "*"
-OUTLINE = [*]+ {INPUT_OR_SPACES}*
+FIRST_OUTLINE = "*" {INPUT_OR_SPACES}*
+SECOND_OUTLINE = "**" {INPUT_OR_SPACES}*
+THIRD_OUTLINE = "***" {INPUT_OR_SPACES}*
+FOURTH_OUTLINE = "****" {INPUT_OR_SPACES}*
+FIFTH_OUTLINE = "*****" {INPUT_OR_SPACES}*
+SIXTH_OUTLINE = "******" {INPUT_OR_SPACES}*
+SEVENTH_OUTLINE = "*******" {INPUT_OR_SPACES}*
+EIGTH_OUTLINE = "********" {INPUT_OR_SPACES}*
+NINTH_OUTLINE = "*********" {INPUT_OR_SPACES}*
+TENTH_OUTLINE = "**********" {INPUT_OR_SPACES}*
 
 // not sure what this was intended to do:
 CODELINE = {SPACES}*": "{INPUT_CHARACTER}*
@@ -47,7 +56,16 @@ PROPERTIES_END=[\ \t]*":END:"
 
 <YYINITIAL> {
     /** Elements that must start at the beginning of the line **/
-    ^{OUTLINE}          { yybegin(YYINITIAL); return OUTLINE; }
+    ^{TENTH_OUTLINE}          { yybegin(YYINITIAL); return TENTHOUTLINE; }
+    ^{NINTH_OUTLINE}          { yybegin(YYINITIAL); return NINTHOUTLINE; }
+    ^{EIGTH_OUTLINE}          { yybegin(YYINITIAL); return EIGTHOUTLINE; }
+    ^{SEVENTH_OUTLINE}          { yybegin(YYINITIAL); return SEE; }
+    ^{SIXTH_OUTLINE}          { yybegin(YYINITIAL); return SIXTHOUTLINE; }
+    ^{FIFTH_OUTLINE}          { yybegin(YYINITIAL); return FIFTHOUTLINE; }
+    ^{FOURTH_OUTLINE}          { yybegin(YYINITIAL); return FOURTHOUTLINE; }
+    ^{THIRD_OUTLINE}          { yybegin(YYINITIAL); return THIRDOUTLINE; }
+    ^{SECOND_OUTLINE}          { yybegin(YYINITIAL); return SECONDOUTLINE; }
+    ^{FIRST_OUTLINE}          { yybegin(YYINITIAL); return FIRSTOUTLINE; }
     ^{KEYWORD}          { yybegin(YYINITIAL); return KEYWORD; }
     ^{CODELINE}         { yybegin(YYINITIAL); return CODE; }
     ^{PROPERTIES_START} { yybegin(PROPERTIES); return DRAWER_DELIMITER; }

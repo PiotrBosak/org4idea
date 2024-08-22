@@ -1,5 +1,15 @@
 #+TITLE: org4idea: edit org-mode files from IntelliJ
 
+* nauka
+:LOGBOOK:
+CLOCK: [2024-08-22 Thu 07:29]--[2024-08-22 Thu 07:54] =>  0:25
+CLOCK: [2024-08-22 Thu 06:58]--[2024-08-22 Thu 07:23] =>  0:25
+:END:
+** WWWWW
+*** aaa
+**** bbb
+***** cccc
+****** ddddd
 [[media/screenshot_new.png]]
 
 [[https://gitter.im/org4idea/Lobby][https://img.shields.io/badge/gitter-org4idea-green.svg]]
@@ -12,6 +22,11 @@ _DISCLAIMER_: *org4idea* is still in its /inception / pre-alpha / here-be-dragon
 
 * Status and planned features
 ** Basic Editing
+#+BEGIN_SRC scala
+  val hello = "Hello";
+#+END_SRC
+
+
 These feature only requires some Intellij customisation of the plugin, and basic lexing rules
 
   - [X] spellchecking
