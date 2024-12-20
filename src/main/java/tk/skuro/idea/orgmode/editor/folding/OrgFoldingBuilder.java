@@ -109,7 +109,13 @@ public class OrgFoldingBuilder implements FoldingBuilder {
     }
 
     private boolean isOutlineBlock(IElementType token) {
-        return OrgTokenTypes.OUTLINE_BLOCK_1.equals(token);
+        return
+                OrgTokenTypes.OUTLINE_BLOCK_1.equals(token) ||
+                        OrgTokenTypes.OUTLINE_BLOCK_2.equals(token) ||
+                        OrgTokenTypes.OUTLINE_BLOCK_3.equals(token) ||
+                        OrgTokenTypes.OUTLINE_BLOCK_4.equals(token) ||
+                        OrgTokenTypes.OUTLINE_BLOCK_5.equals(token) ||
+                        OrgTokenTypes.OUTLINE_BLOCK_6.equals(token);
     }
 
     /**
@@ -132,7 +138,13 @@ public class OrgFoldingBuilder implements FoldingBuilder {
     }
 
     private boolean isOutline(IElementType token) {
-        return OrgTokenTypes.FIRSTOUTLINE.equals(token);
+        return
+                OrgTokenTypes.FIRSTOUTLINE.equals(token) ||
+                        OrgTokenTypes.SECONDOUTLINE.equals(token) ||
+                        OrgTokenTypes.THIRDOUTLINE.equals(token) ||
+                        OrgTokenTypes.FOURTHOUTLINE.equals(token) ||
+                        OrgTokenTypes.FIFTHOUTLINE.equals(token) ||
+                        OrgTokenTypes.SIXTHOUTLINE.equals(token);
     }
 
     private boolean isBlock(IElementType token) {
