@@ -18,7 +18,7 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
         try {
             if (context instanceof PsiLanguageInjectionHost host) {
                 String text = host.getText();
-                if (text.startsWith("#+BEGIN_SRC") || text.startsWith("#begin_src")) {
+                if (text.startsWith("#+BEGIN_SRC")) {
                     String language = extractLanguage(text);
                     if (!language.isEmpty()) {
 
@@ -33,27 +33,14 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
                         if (injectedLanguage != null) {
                             // Inject the language into the block between #+BEGIN_SRC and #+END_SRC
 
-                            int startIndexOfCaps = text.indexOf("#+BEGIN_SRC");
-                            int startIndexOfNoCaps = text.indexOf("#+begin_src");
-                            int startOffset;
-                            if (startIndexOfCaps > startIndexOfNoCaps || startIndexOfCaps == -1)
-                                startOffset = startIndexOfNoCaps;
-                            else
-                                startOffset = startIndexOfCaps;
-                            startOffset = startOffset + "#+BEGIN_SRC".length() + language.length();
+                            int startOffset = text.indexOf("#+BEGIN_SRC") + "#+BEGIN_SRC".length() + language.length();
                             startOffset = text.indexOf("\n", startOffset) + 1; // Move to the next line
                             while (startOffset < text.length() && Character.isWhitespace(text.charAt(startOffset))) {
                                 startOffset++;
                             }
 
 
-                            int endIndexOfCaps = text.indexOf("#+END_SRC");
-                            int endIndexOfNoCaps = text.indexOf("#+end_src");
-                            int endOffset;
-                            if (endIndexOfCaps > endIndexOfNoCaps || endIndexOfCaps == -1)
-                                endOffset = endIndexOfNoCaps;
-                            else
-                                endOffset = startIndexOfCaps;
+                            int endOffset = text.indexOf("#+END_SRC");
                             if (endOffset > startOffset) {
                                 registrar.startInjecting(injectedLanguage)
                                         .addPlace(null, null, host, TextRange.create(startOffset, endOffset))
