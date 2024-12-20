@@ -6,6 +6,7 @@
     <vendor email="skuro@skuro.tk" url="http://skuro.tk">Carlo Sciolla</vendor>
     <id>Org4Idea</id>
     <depends>com.intellij.modules.lang</depends>
+    <depends>IdeaVIM</depends>
 
     <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
     <idea-version since-build="107.105"/>

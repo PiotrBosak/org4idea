@@ -9,6 +9,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import tk.skuro.idea.orgmode.parser.OrgTokenTypes;
@@ -17,7 +18,7 @@ import tk.skuro.idea.orgmode.psi.OrgPsiElementImpl;
 /**
  * Create a new outline at the same level as the current one. The new outline is created at a different position
  * depending on the shape of the text:
- *
+ * <p>
  * - as a next sibling outline before any following outlines of the same or lower depth
  * - at the beginning of the file if the file is empty
  * - at the end of the file if it doesn't contain any outline
@@ -31,11 +32,11 @@ public class NewOutlineSameLevel extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         final PsiFile file = e.getData(LangDataKeys.PSI_FILE);
         final Editor editor = e.getData(LangDataKeys.EDITOR);
-        if(editor!= null && file != null) {
+        if (editor != null && file != null) {
             final CaretModel caretModel = editor.getCaretModel();
             final int offset = caretModel.getCurrentCaret().getOffset();
             final PsiElement element = file.findElementAt(offset);
-            if(element != null) {
+            if (element != null) {
                 addOutline(element, editor, file);
             } else {
                 addText(editor, file, 0, "* ");
@@ -58,10 +59,9 @@ public class NewOutlineSameLevel extends AnAction {
             if (currentOutline != null) {
                 final int offset = endOfOutline(currentOutline);
                 final String outlineText = createOutlineSameDepthAs(currentOutline);
-                if(isEOF(offset, file)) {
+                if (isEOF(offset, file)) {
                     addText(editor, file, offset, outlineText);
-                }
-                else {
+                } else {
                     addTextAndGoBackOne(editor, file, offset, outlineText + "\n");
                 }
             } else {
@@ -86,7 +86,7 @@ public class NewOutlineSameLevel extends AnAction {
 
     private int endOfOutline(PsiElement currentOutline) {
         PsiElement candidate = findNextOutlineSameDepthOrHigher(currentOutline);
-        return candidate == null? currentOutline.getContainingFile().getTextRange().getEndOffset() :
+        return candidate == null ? currentOutline.getContainingFile().getTextRange().getEndOffset() :
                 candidate.getTextOffset();
     }
 
@@ -100,9 +100,9 @@ public class NewOutlineSameLevel extends AnAction {
             @Override
             protected void run() throws Throwable {
                 final Document document = editor.getDocument();
-                final String textToEnter = isNewlineBefore(offset) ? text : "\n" + text;
+                final String textToEnter = isNewlineBefore(offset) ? text + "\n" : "\n" + text + "\n";
                 document.insertString(offset, textToEnter);
-                editor.getCaretModel().getCurrentCaret().moveToOffset(offset + textToEnter.length());
+                editor.getCaretModel().getCurrentCaret().moveToOffset(offset + textToEnter.length() - 1);
             }
         }.execute();
     }
@@ -127,7 +127,7 @@ public class NewOutlineSameLevel extends AnAction {
     private PsiElement findNextOutlineSameDepthOrHigher(PsiElement element) {
         PsiElement candidate = element.getNextSibling();
         int depth = outlineDepth(element);
-        while(candidate != null && !isOutlineBlock(candidate) && outlineDepth(candidate) <= depth) {
+        while (candidate != null && !isOutlineBlock(candidate) && outlineDepth(candidate) <= depth) {
             candidate = candidate.getNextSibling();
         }
 
@@ -136,7 +136,7 @@ public class NewOutlineSameLevel extends AnAction {
 
     private PsiElement findNextOutline(PsiElement element) {
         PsiElement candidate = findRootLevel(element);
-        while(candidate != null && !isOutlineBlock(candidate)) {
+        while (candidate != null && !isOutlineBlock(candidate)) {
             candidate = candidate.getNextSibling();
         }
 
@@ -144,12 +144,12 @@ public class NewOutlineSameLevel extends AnAction {
     }
 
     private int outlineDepth(final PsiElement element) {
-        if(isOutlineBlock(element)) {
+        if (isOutlineBlock(element)) {
             return element.getText().split("\\s")[0].length();
         }
 
         final PsiElement previousOutline = findPreviousOutline(element);
-        return previousOutline == null?  0 : outlineDepth(previousOutline);
+        return previousOutline == null ? 0 : outlineDepth(previousOutline);
     }
 
     private String createOutlineSameDepthAs(PsiElement currentOutline) {
@@ -159,15 +159,25 @@ public class NewOutlineSameLevel extends AnAction {
     private PsiElement findPreviousOutline(PsiElement element) {
         PsiElement candidate = findRootLevel(element);
         while (candidate != null &&
-                !candidate.getNode().getElementType().equals(OrgTokenTypes.OUTLINE_BLOCK_1)) {
+                !isOneOfOutline(candidate.getNode().getElementType())) {
             candidate = candidate.getPrevSibling();
         }
         return candidate;
     }
 
+    private boolean isOneOfOutline(IElementType elem) {
+        return
+                elem.equals(OrgTokenTypes.OUTLINE_BLOCK_1) ||
+                        elem.equals(OrgTokenTypes.OUTLINE_BLOCK_2) ||
+                        elem.equals(OrgTokenTypes.OUTLINE_BLOCK_3) ||
+                        elem.equals(OrgTokenTypes.OUTLINE_BLOCK_4) ||
+                        elem.equals(OrgTokenTypes.OUTLINE_BLOCK_5) ||
+                        elem.equals(OrgTokenTypes.OUTLINE_BLOCK_6);
+    }
+
     private PsiElement findRootLevel(PsiElement element) {
         PsiElement candidate = element;
-        while(!(candidate.getParent() instanceof PsiFile)) {
+        while (!(candidate.getParent() instanceof PsiFile)) {
             candidate = candidate.getParent();
         }
 
@@ -175,11 +185,16 @@ public class NewOutlineSameLevel extends AnAction {
     }
 
     private PsiElement getParentOutlineOrSelf(@NotNull PsiElement element) {
-        final OrgPsiElementImpl candidate = PsiTreeUtil.getTopmostParentOfType(element, OrgPsiElementImpl.class);
-        return isOutlineBlock(candidate) ? candidate : null;
+        return isOutlineBlock(element) ? element : null;
     }
 
     private boolean isOutlineBlock(PsiElement candidate) {
-        return candidate != null && candidate.getNode().getElementType() == OrgTokenTypes.OUTLINE_BLOCK_1;
+        return candidate != null &&
+                candidate.getNode().getElementType() == OrgTokenTypes.OUTLINE_BLOCK_1 ||
+                candidate.getNode().getElementType() == OrgTokenTypes.OUTLINE_BLOCK_2 ||
+                candidate.getNode().getElementType() == OrgTokenTypes.OUTLINE_BLOCK_3 ||
+                candidate.getNode().getElementType() == OrgTokenTypes.OUTLINE_BLOCK_4 ||
+                candidate.getNode().getElementType() == OrgTokenTypes.OUTLINE_BLOCK_5 ||
+                candidate.getNode().getElementType() == OrgTokenTypes.OUTLINE_BLOCK_6;
     }
 }

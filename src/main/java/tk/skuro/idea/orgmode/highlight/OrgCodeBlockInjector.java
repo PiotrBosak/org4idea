@@ -18,33 +18,42 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
         try {
             if (context instanceof PsiLanguageInjectionHost host) {
                 String text = host.getText();
-                if (text.startsWith("#+BEGIN_SRC")) {
+                if (text.startsWith("#+BEGIN_SRC") || text.startsWith("#begin_src")) {
                     String language = extractLanguage(text);
                     if (!language.isEmpty()) {
 
                         Language injectedLanguage = null;
                         for (Language languageL : Language.getRegisteredLanguages()) {
                             if (language.equals("scala")) {
-                                System.out.println("AAAA");
                                 injectedLanguage = Language.findLanguageByID("Scala 3");
-                                System.out.println(injectedLanguage);
                             } else if (languageL.getDisplayName().toLowerCase().contains(language.toLowerCase())) {
-                                System.out.println("YYYY found " + languageL);
                                 injectedLanguage = languageL;
                             }
                         }
-//                        Language.findLanguageByID(language.toUpperCase());
                         if (injectedLanguage != null) {
                             // Inject the language into the block between #+BEGIN_SRC and #+END_SRC
 
-                            int startOffset = text.indexOf("#+BEGIN_SRC") + "#+BEGIN_SRC".length() + language.length();
+                            int startIndexOfCaps = text.indexOf("#+BEGIN_SRC");
+                            int startIndexOfNoCaps = text.indexOf("#+begin_src");
+                            int startOffset;
+                            if (startIndexOfCaps > startIndexOfNoCaps || startIndexOfCaps == -1)
+                                startOffset = startIndexOfNoCaps;
+                            else
+                                startOffset = startIndexOfCaps;
+                            startOffset = startOffset + "#+BEGIN_SRC".length() + language.length();
                             startOffset = text.indexOf("\n", startOffset) + 1; // Move to the next line
                             while (startOffset < text.length() && Character.isWhitespace(text.charAt(startOffset))) {
                                 startOffset++;
                             }
 
 
-                            int endOffset = text.indexOf("#+END_SRC");
+                            int endIndexOfCaps = text.indexOf("#+END_SRC");
+                            int endIndexOfNoCaps = text.indexOf("#+end_src");
+                            int endOffset;
+                            if (endIndexOfCaps > endIndexOfNoCaps || endIndexOfCaps == -1)
+                                endOffset = endIndexOfNoCaps;
+                            else
+                                endOffset = startIndexOfCaps;
                             if (endOffset > startOffset) {
                                 registrar.startInjecting(injectedLanguage)
                                         .addPlace(null, null, host, TextRange.create(startOffset, endOffset))
@@ -61,8 +70,6 @@ public class OrgCodeBlockInjector implements MultiHostInjector {
 
     private String extractLanguage(String text) {
         var beginOfLang = text.substring(12);
-        System.out.println("XXXXXXXXXXXXXXX");
-        System.out.println(beginOfLang);
         if (beginOfLang.startsWith("scala")) {
             return "scala";
         }
