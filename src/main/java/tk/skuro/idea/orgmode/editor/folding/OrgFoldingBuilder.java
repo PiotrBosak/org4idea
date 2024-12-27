@@ -54,13 +54,15 @@ public class OrgFoldingBuilder implements FoldingBuilder {
         final ASTNode nextSibling = findNextOutline(node);
         final TextRange textRange;
         if (nextSibling != null) {
-            textRange = TextRange.create(node.getStartOffset(), nextSibling.getStartOffset() - 1);
+            String firstLine = node.getText().lines().findFirst().orElse("");
+            textRange = TextRange.create(node.getStartOffset() + firstLine.length() -1, nextSibling.getStartOffset() - 1);
             final FoldingDescriptor descriptor = new FoldingDescriptor(node, textRange);
             descriptors.add(descriptor);
         } else {
             final ASTNode lastNode = getLastNode(node);
             if (!sameNode(node, lastNode)) {
-                textRange = TextRange.create(node.getStartOffset(), lastNode.getStartOffset());
+                String firstLine = node.getText().lines().findFirst().orElse("");
+                textRange = TextRange.create(node.getStartOffset() + firstLine.length(), lastNode.getStartOffset());
                 final FoldingDescriptor descriptor = new FoldingDescriptor(node, textRange);
                 descriptors.add(descriptor);
             }
@@ -154,8 +156,7 @@ public class OrgFoldingBuilder implements FoldingBuilder {
     @Nullable
     @Override
     public String getPlaceholderText(@NotNull ASTNode astNode) {
-        final String firstLine = astNode.getText().split("\n")[0];
-        return firstLine + "...";
+        return "...";
     }
 
     @Override
