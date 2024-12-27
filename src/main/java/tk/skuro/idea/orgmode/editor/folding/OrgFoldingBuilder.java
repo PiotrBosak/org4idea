@@ -20,10 +20,6 @@ import java.util.*;
  */
 public class OrgFoldingBuilder implements FoldingBuilder {
 
-    private final static Set<IElementType> BLOCK_ELEMENTS = new HashSet<IElementType>(Arrays.asList(
-            OrgTokenTypes.BLOCK,
-            OrgTokenTypes.DRAWER));
-
     @NotNull
     @Override
     public FoldingDescriptor[] buildFoldRegions(@NotNull ASTNode astNode, @NotNull Document document) {
@@ -39,9 +35,7 @@ public class OrgFoldingBuilder implements FoldingBuilder {
     protected void collectBlocks(final ASTNode node, final List<FoldingDescriptor> descriptors) {
         final IElementType token = node.getElementType();
 
-        if (isBlock(token)) {
-            foldBlock(node, descriptors);
-        } else if (isOutline(token)) {
+         if (isOutline(token)) {
             foldOutline(node, descriptors);
         }
 
@@ -55,7 +49,7 @@ public class OrgFoldingBuilder implements FoldingBuilder {
         final TextRange textRange;
         if (nextSibling != null) {
             String firstLine = node.getText().lines().findFirst().orElse("");
-            textRange = TextRange.create(node.getStartOffset() + firstLine.length() -1, nextSibling.getStartOffset() - 1);
+            textRange = TextRange.create(node.getStartOffset() + firstLine.length(), nextSibling.getStartOffset());
             final FoldingDescriptor descriptor = new FoldingDescriptor(node, textRange);
             descriptors.add(descriptor);
         } else {
@@ -134,11 +128,6 @@ public class OrgFoldingBuilder implements FoldingBuilder {
         }
     }
 
-    private void foldBlock(ASTNode node, List<FoldingDescriptor> descriptors) {
-        final FoldingDescriptor descriptor = new FoldingDescriptor(node, node.getTextRange());
-        descriptors.add(descriptor);
-    }
-
     private boolean isOutline(IElementType token) {
         return
                 OrgTokenTypes.FIRSTOUTLINE.equals(token) ||
@@ -147,10 +136,6 @@ public class OrgFoldingBuilder implements FoldingBuilder {
                         OrgTokenTypes.FOURTHOUTLINE.equals(token) ||
                         OrgTokenTypes.FIFTHOUTLINE.equals(token) ||
                         OrgTokenTypes.SIXTHOUTLINE.equals(token);
-    }
-
-    private boolean isBlock(IElementType token) {
-        return BLOCK_ELEMENTS.contains(token);
     }
 
     @Nullable
