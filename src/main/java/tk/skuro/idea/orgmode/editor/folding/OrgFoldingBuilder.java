@@ -160,6 +160,6 @@ public class OrgFoldingBuilder implements FoldingBuilder {
 
     @Override
     public boolean isCollapsedByDefault(@NotNull ASTNode astNode) {
-        return false;
+        return true;
     }
 }
