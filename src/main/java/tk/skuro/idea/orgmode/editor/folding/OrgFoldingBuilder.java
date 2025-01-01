@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import tk.skuro.idea.orgmode.parser.OrgTokenTypes;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Enables blocks folding in org files, e.g. for code blocks, drawers, etc.
@@ -35,7 +36,7 @@ public class OrgFoldingBuilder implements FoldingBuilder {
     protected void collectBlocks(final ASTNode node, final List<FoldingDescriptor> descriptors) {
         final IElementType token = node.getElementType();
 
-         if (isOutline(token)) {
+        if (isOutline(token)) {
             foldOutline(node, descriptors);
         }
 
@@ -48,15 +49,13 @@ public class OrgFoldingBuilder implements FoldingBuilder {
         final ASTNode nextSibling = findNextOutline(node);
         final TextRange textRange;
         if (nextSibling != null) {
-            String firstLine = node.getText().lines().findFirst().orElse("");
-            textRange = TextRange.create(node.getStartOffset() + firstLine.length(), nextSibling.getStartOffset());
+            textRange = TextRange.create(node.getStartOffset() + indexOfWhenToStartFold(node), nextSibling.getStartOffset() - 1);
             final FoldingDescriptor descriptor = new FoldingDescriptor(node, textRange);
             descriptors.add(descriptor);
         } else {
             final ASTNode lastNode = getLastNode(node);
             if (!sameNode(node, lastNode)) {
-                String firstLine = node.getText().lines().findFirst().orElse("");
-                textRange = TextRange.create(node.getStartOffset() + firstLine.length(), lastNode.getStartOffset());
+                textRange = TextRange.create(node.getStartOffset() + indexOfWhenToStartFold(node), lastNode.getStartOffset());
                 final FoldingDescriptor descriptor = new FoldingDescriptor(node, textRange);
                 descriptors.add(descriptor);
             }
@@ -141,11 +140,37 @@ public class OrgFoldingBuilder implements FoldingBuilder {
     @Nullable
     @Override
     public String getPlaceholderText(@NotNull ASTNode astNode) {
-        return "...";
+        String firstLine = astNode.getText()
+                .lines()
+                .findFirst()
+                .orElse("");
+        int indexOfKeyword = indexOfWhenToStartFold(astNode);
+
+        return firstLine.substring(indexOfKeyword) + " [...]";
+    }
+
+    private int indexOfWhenToStartFold(ASTNode node) {
+        List<String> list = List.of(
+                "DONE", "CANCELLED", "TODO", "WAITING", "NEXT", "PROJECT"
+        );
+        String line = node.getText().lines().findFirst().orElse("");
+        for (String keyword : list) {
+            if (line.contains(keyword))
+                return line.indexOf(keyword) + keyword.length() + 1;
+        }
+        int numberOfAsterisks = 0;
+        for (char c : line.toCharArray()) {
+            if (c == '*')
+                numberOfAsterisks++;
+            else break;
+        }
+        if(line.replace("*", " ").isBlank())
+            return numberOfAsterisks;
+        else return numberOfAsterisks + 1;
     }
 
     @Override
     public boolean isCollapsedByDefault(@NotNull ASTNode astNode) {
-        return true;
+        return false;
     }
 }
